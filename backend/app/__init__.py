@@ -4,11 +4,23 @@ from flask_cors import CORS
 from flask_smorest import Api
 from .models import InMemoryUnitOfWork
 
+# PUBLIC_INTERFACE
+def get_app():
+    """Return the configured Flask app (public accessor to support external imports)."""
+    return app
+
+
+# PUBLIC_INTERFACE
+def get_api():
+    """Return the configured Smorest Api object (public accessor)."""
+    return api
+
 # Blueprints
 from .routes.health import blp as health_blp
 from .routes.tests import blp as tests_blp
 from .routes.analytics import blp as analytics_blp
 from .routes.users import blp as users_blp
+from .routes.hello import blp as hello_blp
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -32,6 +44,7 @@ app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-
 
 openapi_tags = [
     {"name": "Health", "description": "Health check route"},
+    {"name": "Hello", "description": "Connectivity hello endpoint"},
     {"name": "Tests", "description": "Test management endpoints"},
     {"name": "Analytics", "description": "Analytics endpoints"},
     {"name": "Users", "description": "User management endpoints"},
@@ -71,3 +84,4 @@ api.register_blueprint(health_blp)
 api.register_blueprint(tests_blp)
 api.register_blueprint(analytics_blp)
 api.register_blueprint(users_blp)
+api.register_blueprint(hello_blp)
